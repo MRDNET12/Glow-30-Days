@@ -1,0 +1,263 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+export type View = 'onboarding' | 'dashboard' | 'challenge' | 'journal' | 'trackers' | 'routine' | 'vision-board' | 'bonus' | 'settings';
+
+interface ChallengeProgress {
+  completedDays: number[];
+  currentDay: number;
+  notes: Record<number, string>;
+}
+
+interface JournalEntry {
+  id: string;
+  date: Date;
+  mood: string;
+  feelings: string;
+  glow: string;
+  learned: string;
+  freeContent: string;
+}
+
+interface TrackerData {
+  date: string;
+  waterGlasses: number;
+  sleepHours: number;
+  mood: number;
+  activityMinutes: number;
+  skincareCompleted: boolean;
+  habits: Record<string, boolean>;
+}
+
+interface RoutineItem {
+  id: string;
+  step1: string;
+  step2: string;
+  step3: string;
+  step4: string;
+  step5: string;
+}
+
+interface VisionBoardImage {
+  id: string;
+  url: string;
+  caption: string;
+}
+
+interface AppState {
+  // Navigation
+  currentView: View;
+  setCurrentView: (view: View) => void;
+  currentDay: number;
+  setCurrentDay: (day: number) => void;
+
+  // Onboarding
+  hasStarted: boolean;
+  startChallenge: () => void;
+
+  // Challenge Progress
+  challengeProgress: ChallengeProgress;
+  toggleDayCompletion: (day: number) => void;
+  updateDayNotes: (day: number, notes: string) => void;
+
+  // Journal
+  journalEntries: JournalEntry[];
+  addJournalEntry: (entry: Omit<JournalEntry, 'id'>) => void;
+  updateJournalEntry: (id: string, entry: Partial<JournalEntry>) => void;
+  deleteJournalEntry: (id: string) => void;
+
+  // Trackers
+  trackers: TrackerData[];
+  updateTracker: (date: string, tracker: Partial<TrackerData>) => void;
+  getTrackerByDate: (date: string) => TrackerData | undefined;
+
+  // Routine
+  routine: RoutineItem;
+  updateRoutine: (routine: Partial<RoutineItem>) => void;
+  isRoutineCompleted: (date: string) => boolean;
+  setRoutineCompleted: (date: string, completed: boolean) => void;
+  routineCompletedDates: string[];
+
+  // Vision Board
+  visionBoardImages: VisionBoardImage[];
+  addVisionBoardImage: (image: Omit<VisionBoardImage, 'id'>) => void;
+  removeVisionBoardImage: (id: string) => void;
+
+  // Settings
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
+  notificationsEnabled: boolean;
+  setNotificationsEnabled: (enabled: boolean) => void;
+
+  // Progress Calculation
+  getProgressPercentage: () => number;
+}
+
+const defaultRoutine: RoutineItem = {
+  id: 'default',
+  step1: 'Nettoyage en douceur',
+  step2: 'Hydratation visage',
+  step3: 'Méditation 5 min',
+  step4: 'Journaling',
+  step5: 'Gratitude du soir'
+};
+
+export const useStore = create<AppState>()(
+  persist(
+    (set, get) => ({
+      // Navigation
+      currentView: 'onboarding',
+      setCurrentView: (view) => set({ currentView: view }),
+      currentDay: 1,
+      setCurrentDay: (day) => set({ currentDay: day }),
+
+      // Onboarding
+      hasStarted: false,
+      startChallenge: () => set({ hasStarted: true, currentView: 'dashboard' }),
+
+      // Challenge Progress
+      challengeProgress: {
+        completedDays: [],
+        currentDay: 1,
+        notes: {}
+      },
+      toggleDayCompletion: (day) => {
+        const { completedDays, currentDay } = get().challengeProgress;
+        const isCompleted = completedDays.includes(day);
+        const newCompletedDays = isCompleted
+          ? completedDays.filter((d) => d !== day)
+          : [...completedDays, day].sort((a, b) => a - b);
+
+        // Update current day to next uncompleted day
+        let nextDay = 1;
+        for (let i = 1; i <= 30; i++) {
+          if (!newCompletedDays.includes(i)) {
+            nextDay = i;
+            break;
+          }
+        }
+
+        set({
+          challengeProgress: {
+            ...get().challengeProgress,
+            completedDays: newCompletedDays,
+            currentDay: nextDay
+          }
+        });
+      },
+      updateDayNotes: (day, notes) => {
+        set({
+          challengeProgress: {
+            ...get().challengeProgress,
+            notes: { ...get().challengeProgress.notes, [day]: notes }
+          }
+        });
+      },
+
+      // Journal
+      journalEntries: [],
+      addJournalEntry: (entry) => {
+        const newEntry: JournalEntry = {
+          ...entry,
+          id: crypto.randomUUID()
+        };
+        set({ journalEntries: [newEntry, ...get().journalEntries] });
+      },
+      updateJournalEntry: (id, updatedEntry) => {
+        set({
+          journalEntries: get().journalEntries.map((entry) =>
+            entry.id === id ? { ...entry, ...updatedEntry } : entry
+          )
+        });
+      },
+      deleteJournalEntry: (id) => {
+        set({
+          journalEntries: get().journalEntries.filter((entry) => entry.id !== id)
+        });
+      },
+
+      // Trackers
+      trackers: [],
+      updateTracker: (date, tracker) => {
+        const { trackers } = get();
+        const existingIndex = trackers.findIndex((t) => t.date === date);
+
+        if (existingIndex >= 0) {
+          const newTrackers = [...trackers];
+          newTrackers[existingIndex] = {
+            ...newTrackers[existingIndex],
+            ...tracker
+          };
+          set({ trackers: newTrackers });
+        } else {
+          set({
+            trackers: [
+              {
+                date,
+                waterGlasses: 0,
+                sleepHours: 0,
+                mood: 0,
+                activityMinutes: 0,
+                skincareCompleted: false,
+                habits: {},
+                ...tracker
+              },
+              ...trackers
+            ]
+          });
+        }
+      },
+      getTrackerByDate: (date) => {
+        return get().trackers.find((t) => t.date === date);
+      },
+
+      // Routine
+      routine: defaultRoutine,
+      updateRoutine: (routine) => {
+        set({ routine: { ...get().routine, ...routine } });
+      },
+      isRoutineCompleted: (date) => {
+        return get().routineCompletedDates.includes(date);
+      },
+      setRoutineCompleted: (date, completed) => {
+        const { routineCompletedDates } = get();
+        const newCompletedDates = completed
+          ? [...routineCompletedDates, date]
+          : routineCompletedDates.filter((d) => d !== date);
+        set({ routineCompletedDates: newCompletedDates });
+      },
+      routineCompletedDates: [],
+
+      // Vision Board
+      visionBoardImages: [],
+      addVisionBoardImage: (image) => {
+        const newImage: VisionBoardImage = {
+          ...image,
+          id: crypto.randomUUID()
+        };
+        set({ visionBoardImages: [...get().visionBoardImages, newImage] });
+      },
+      removeVisionBoardImage: (id) => {
+        set({
+          visionBoardImages: get().visionBoardImages.filter((img) => img.id !== id)
+        });
+      },
+
+      // Settings
+      theme: 'light',
+      setTheme: (theme) => set({ theme }),
+      notificationsEnabled: true,
+      setNotificationsEnabled: (enabled) => set({ notificationsEnabled: enabled }),
+
+      // Progress Calculation
+      getProgressPercentage: () => {
+        const { completedDays } = get().challengeProgress;
+        return Math.round((completedDays.length / 30) * 100);
+      }
+    }),
+    {
+      name: 'glow-up-storage',
+      version: 1
+    }
+  )
+);
