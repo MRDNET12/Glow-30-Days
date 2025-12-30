@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useStore, View } from '@/lib/store';
-import { challengeDays, bonusAffirmations, checklistsData, softLifeGuide, bonusSections, fiftyThingsAlone } from '@/lib/challenge-data';
+import { getChallengeDays, getAffirmations, getChecklists, getSoftLifeGuide, getBonusSections, getFiftyThingsAlone, getSoftLifeTips } from '@/lib/translated-content';
 import { Sparkles, BookOpen, TrendingUp, Home, Heart, Target, Layers, Gift, Settings, ChevronRight, Check, Plus, X, Calendar, Moon, Sun, Droplet, Zap, Smile, Activity, Utensils, Lightbulb, Image as ImageIcon, Trash2, Download, Bell, BellOff, Star, CheckSquare, ListChecks, Award, Globe } from 'lucide-react';
 import { useTranslation } from '@/lib/useTranslation';
 import { Language } from '@/lib/translations';
@@ -59,6 +59,15 @@ export default function GlowUpChallengeApp() {
 
   const { t } = useTranslation();
 
+  // Get translated content based on current language
+  const challengeDays = getChallengeDays(language);
+  const bonusAffirmations = getAffirmations(language);
+  const checklistsData = getChecklists(language);
+  const softLifeGuide = getSoftLifeGuide(language);
+  const bonusSections = getBonusSections(language);
+  const fiftyThingsAlone = getFiftyThingsAlone(language);
+  const softLifeTips = getSoftLifeTips(language);
+
   // État pour le dialog de félicitations
   const [showCongratulations, setShowCongratulations] = useState(false);
 
@@ -72,10 +81,10 @@ export default function GlowUpChallengeApp() {
   });
 
   // États pour les modals
-  const [selectedChecklist, setSelectedChecklist] = useState<typeof checklistsData[0] | null>(null);
+  const [selectedChecklist, setSelectedChecklist] = useState<any | null>(null);
   const [showSoftLifeGuide, setShowSoftLifeGuide] = useState(false);
   const [selectedGuideStep, setSelectedGuideStep] = useState<number | null>(null);
-  const [selectedBonusSection, setSelectedBonusSection] = useState<typeof bonusSections[0] | null>(null);
+  const [selectedBonusSection, setSelectedBonusSection] = useState<any | null>(null);
 
   useEffect(() => {
     if (hasStarted) {
