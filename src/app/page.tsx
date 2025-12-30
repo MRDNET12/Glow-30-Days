@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useStore, View } from '@/lib/store';
-import { challengeDays, bonusAffirmations, checklistsData, softLifeGuide, bonusSections } from '@/lib/challenge-data';
-import { Sparkles, BookOpen, TrendingUp, Home, Heart, Target, Layers, Gift, Settings, ChevronRight, Check, Plus, X, Calendar, Moon, Sun, Droplet, Zap, Smile, Activity, Utensils, Lightbulb, Image as ImageIcon, Trash2, Download, Bell, BellOff, Star, CheckSquare, ListChecks, Award } from 'lucide-react';
+import { challengeDays, bonusAffirmations, checklistsData, softLifeGuide, bonusSections, fiftyThingsAlone } from '@/lib/challenge-data';
+import { Sparkles, BookOpen, TrendingUp, Home, Heart, Target, Layers, Gift, Settings, ChevronRight, Check, Plus, X, Calendar, Moon, Sun, Droplet, Zap, Smile, Activity, Utensils, Lightbulb, Image as ImageIcon, Trash2, Download, Bell, BellOff, Star, CheckSquare, ListChecks, Award, Globe } from 'lucide-react';
+import { useTranslation } from '@/lib/useTranslation';
+import { Language } from '@/lib/translations';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -44,8 +46,15 @@ export default function GlowUpChallengeApp() {
     setTheme,
     notificationsEnabled,
     setNotificationsEnabled,
-    getProgressPercentage
+    getProgressPercentage,
+    completedThingsAlone,
+    toggleThingAlone,
+    language,
+    setLanguage,
+    hasSelectedLanguage
   } = useStore();
+
+  const { t } = useTranslation();
 
   const [todayDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [newJournalEntry, setNewJournalEntry] = useState({
@@ -106,6 +115,68 @@ export default function GlowUpChallengeApp() {
 
   const progressPercentage = getProgressPercentage();
 
+  // Language Selection Screen
+  if (!hasSelectedLanguage) {
+    return (
+      <div className={`min-h-screen flex flex-col items-center justify-center p-6 ${theme === 'dark' ? 'bg-stone-950 text-stone-100' : 'bg-amber-50 text-stone-900'}`}>
+        <div className="max-w-md w-full text-center space-y-8">
+          {/* Logo */}
+          <div className="space-y-4">
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-rose-200 via-pink-200 to-orange-100 dark:from-rose-900 dark:via-pink-900 dark:to-orange-900 shadow-lg">
+              <Globe className="w-12 h-12 text-rose-500 dark:text-rose-300" />
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-rose-500 via-pink-500 to-orange-400 bg-clip-text text-transparent">
+              {language === 'fr' ? 'Bienvenue' : language === 'en' ? 'Welcome' : 'Bienvenida'}
+            </h1>
+            <p className="text-xl text-stone-600 dark:text-stone-400 font-light">
+              {language === 'fr' ? 'Choisissez votre langue' : language === 'en' ? 'Choose your language' : 'Elige tu idioma'}
+            </p>
+          </div>
+
+          {/* Language Options */}
+          <div className="space-y-3">
+            {[
+              { code: 'fr' as Language, name: 'Français', flag: '🇫🇷' },
+              { code: 'en' as Language, name: 'English', flag: '🇬🇧' },
+              { code: 'es' as Language, name: 'Español', flag: '🇪🇸' }
+            ].map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => setLanguage(lang.code)}
+                className={`w-full p-4 rounded-xl border-2 transition-all ${
+                  language === lang.code
+                    ? 'border-rose-400 bg-rose-50 dark:bg-rose-900/20'
+                    : theme === 'dark'
+                      ? 'border-stone-800 bg-stone-900 hover:border-stone-700'
+                      : 'border-stone-200 bg-white hover:border-stone-300'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">{lang.flag}</span>
+                    <span className="text-lg font-semibold">{lang.name}</span>
+                  </div>
+                  {language === lang.code && (
+                    <Check className="w-6 h-6 text-rose-500" />
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Continue Button */}
+          <Button
+            onClick={() => setCurrentView('onboarding')}
+            className="w-full h-14 text-lg bg-gradient-to-r from-rose-400 via-pink-400 to-orange-300 hover:from-rose-500 hover:via-pink-500 hover:to-orange-400 text-white font-semibold rounded-full shadow-lg shadow-rose-200 dark:shadow-rose-900/30"
+          >
+            {language === 'fr' ? 'Continuer' : language === 'en' ? 'Continue' : 'Continuar'}
+            <ChevronRight className="ml-2 w-5 h-5" />
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   // Onboarding Screen
   if (!hasStarted) {
     return (
@@ -118,28 +189,27 @@ export default function GlowUpChallengeApp() {
                 <Sparkles className="w-12 h-12 text-rose-500 dark:text-rose-300" />
               </div>
               <h1 className="text-4xl font-bold bg-gradient-to-r from-rose-500 via-pink-500 to-orange-400 bg-clip-text text-transparent">
-                Glow Up Challenge
+                {t.onboarding.title}
               </h1>
               <p className="text-xl text-stone-600 dark:text-stone-400 font-light">
-                30 jours pour devenir la meilleure version de toi-même
+                {t.onboarding.subtitle}
               </p>
             </div>
 
-            {/* Inspirational Quote */}
+            {/* Description */}
             <div className={`p-6 rounded-2xl ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'} shadow-sm border border-stone-200 dark:border-stone-800`}>
-              <p className="text-lg italic text-stone-700 dark:text-stone-300 font-serif">
-                "Tu ne deviens pas ce que tu veux. Tu deviens ce que tu crois."
+              <p className="text-base text-stone-700 dark:text-stone-300">
+                {t.onboarding.description}
               </p>
-              <p className="text-sm text-stone-500 dark:text-stone-500 mt-2">— Oprah Winfrey</p>
             </div>
 
             {/* Features Preview */}
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: BookOpen, title: '30 Jours', desc: 'Contenu complet' },
-                { icon: TrendingUp, title: 'Progression', desc: 'Suivi avance' },
-                { icon: Heart, title: 'Journaling', desc: 'Introspection' },
-                { icon: Target, title: 'Trackers', desc: 'Habitudes' }
+                { icon: BookOpen, title: language === 'fr' ? '30 Jours' : language === 'en' ? '30 Days' : '30 Días', desc: language === 'fr' ? 'Contenu complet' : language === 'en' ? 'Full content' : 'Contenido completo' },
+                { icon: TrendingUp, title: language === 'fr' ? 'Progression' : language === 'en' ? 'Progress' : 'Progreso', desc: language === 'fr' ? 'Suivi avancé' : language === 'en' ? 'Advanced tracking' : 'Seguimiento avanzado' },
+                { icon: Heart, title: 'Journaling', desc: language === 'fr' ? 'Introspection' : language === 'en' ? 'Self-reflection' : 'Introspección' },
+                { icon: Target, title: 'Trackers', desc: language === 'fr' ? 'Habitudes' : language === 'en' ? 'Habits' : 'Hábitos' }
               ].map((feature, index) => (
                 <div
                   key={index}
@@ -157,13 +227,9 @@ export default function GlowUpChallengeApp() {
               onClick={startChallenge}
               className="w-full h-14 text-lg bg-gradient-to-r from-rose-400 via-pink-400 to-orange-300 hover:from-rose-500 hover:via-pink-500 hover:to-orange-400 text-white font-semibold rounded-full shadow-lg shadow-rose-200 dark:shadow-rose-900/30"
             >
-              Commencer mon Glow Up
+              {t.onboarding.startButton}
               <Sparkles className="ml-2 w-5 h-5" />
             </Button>
-
-            <p className="text-sm text-stone-500 dark:text-stone-500">
-              Rejoins des milliers de femmes dans leur transformation
-            </p>
           </div>
         </div>
       </div>
@@ -1023,7 +1089,7 @@ export default function GlowUpChallengeApp() {
               >
                 <X className="w-5 h-5" />
               </Button>
-              <h1 className="text-2xl font-bold">Paramètres</h1>
+              <h1 className="text-2xl font-bold">{t.settings.title}</h1>
             </div>
 
             {/* Progress Overview */}
@@ -1031,24 +1097,30 @@ export default function GlowUpChallengeApp() {
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-2 flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-rose-400" />
-                  Progression Globale
+                  {t.dashboard.progress}
                 </h3>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-stone-600 dark:text-stone-400">Jours complétés</span>
+                    <span className="text-stone-600 dark:text-stone-400">{t.dashboard.daysCompleted}</span>
                     <span className="font-semibold">{challengeProgress.completedDays.length} / 30</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-stone-600 dark:text-stone-400">Pourcentage</span>
+                    <span className="text-stone-600 dark:text-stone-400">
+                      {language === 'fr' ? 'Pourcentage' : language === 'en' ? 'Percentage' : 'Porcentaje'}
+                    </span>
                     <span className="font-semibold text-rose-500">{progressPercentage}%</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-stone-600 dark:text-stone-400">Journal</span>
-                    <span className="font-semibold">{journalEntries.length} entrées</span>
+                    <span className="text-stone-600 dark:text-stone-400">{t.journal.title}</span>
+                    <span className="font-semibold">
+                      {journalEntries.length} {language === 'fr' ? 'entrées' : language === 'en' ? 'entries' : 'entradas'}
+                    </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-stone-600 dark:text-stone-400">Vision Board</span>
-                    <span className="font-semibold">{visionBoardImages.length} images</span>
+                    <span className="text-stone-600 dark:text-stone-400">{t.visionBoard.title}</span>
+                    <span className="font-semibold">
+                      {visionBoardImages.length} {language === 'fr' ? 'images' : language === 'en' ? 'images' : 'imágenes'}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -1057,7 +1129,7 @@ export default function GlowUpChallengeApp() {
             {/* Theme Toggle */}
             <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
               <CardHeader>
-                <CardTitle>Thème</CardTitle>
+                <CardTitle>{t.settings.theme}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between p-4 rounded-xl bg-stone-50 dark:bg-stone-800">
@@ -1068,8 +1140,12 @@ export default function GlowUpChallengeApp() {
                       <Moon className="w-6 h-6 text-purple-400" />
                     )}
                     <div>
-                      <p className="font-semibold">Mode {theme === 'light' ? 'Clair' : 'Sombre'}</p>
-                      <p className="text-xs text-stone-500 dark:text-stone-500">Change l'apparence</p>
+                      <p className="font-semibold">
+                        {theme === 'light' ? t.settings.light : t.settings.dark}
+                      </p>
+                      <p className="text-xs text-stone-500 dark:text-stone-500">
+                        {language === 'fr' ? 'Change l\'apparence' : language === 'en' ? 'Change appearance' : 'Cambiar apariencia'}
+                      </p>
                     </div>
                   </div>
                   <Switch
@@ -1083,7 +1159,7 @@ export default function GlowUpChallengeApp() {
             {/* Notifications */}
             <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
               <CardHeader>
-                <CardTitle>Notifications</CardTitle>
+                <CardTitle>{t.settings.notifications}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between p-4 rounded-xl bg-stone-50 dark:bg-stone-800">
@@ -1094,8 +1170,10 @@ export default function GlowUpChallengeApp() {
                       <BellOff className="w-6 h-6 text-stone-400" />
                     )}
                     <div>
-                      <p className="font-semibold">Notifications</p>
-                      <p className="text-xs text-stone-500 dark:text-stone-500">Rappels quotidiens</p>
+                      <p className="font-semibold">{t.settings.notifications}</p>
+                      <p className="text-xs text-stone-500 dark:text-stone-500">
+                        {notificationsEnabled ? t.settings.enabled : t.settings.disabled}
+                      </p>
                     </div>
                   </div>
                   <Switch
@@ -1103,6 +1181,42 @@ export default function GlowUpChallengeApp() {
                     onCheckedChange={setNotificationsEnabled}
                   />
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Language Selection */}
+            <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
+              <CardHeader>
+                <CardTitle>{t.settings.language}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {[
+                  { code: 'fr' as Language, name: 'Français', flag: '🇫🇷' },
+                  { code: 'en' as Language, name: 'English', flag: '🇬🇧' },
+                  { code: 'es' as Language, name: 'Español', flag: '🇪🇸' }
+                ].map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => setLanguage(lang.code)}
+                    className={`w-full p-4 rounded-xl border-2 transition-all ${
+                      language === lang.code
+                        ? 'border-rose-400 bg-rose-50 dark:bg-rose-900/20'
+                        : theme === 'dark'
+                          ? 'border-stone-800 bg-stone-800 hover:border-stone-700'
+                          : 'border-stone-200 bg-stone-50 hover:border-stone-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">{lang.flag}</span>
+                        <span className="font-semibold">{lang.name}</span>
+                      </div>
+                      {language === lang.code && (
+                        <Check className="w-5 h-5 text-rose-500" />
+                      )}
+                    </div>
+                  </button>
+                ))}
               </CardContent>
             </Card>
 
@@ -1150,7 +1264,7 @@ export default function GlowUpChallengeApp() {
             onClick={() => setCurrentView('dashboard')}
           >
             <Home className="w-6 h-6" />
-            <span className="text-xs">Accueil</span>
+            <span className="text-xs">{t.nav.home}</span>
           </Button>
           <Button
             variant="ghost"
@@ -1158,7 +1272,7 @@ export default function GlowUpChallengeApp() {
             onClick={() => setCurrentView('challenge')}
           >
             <Sparkles className="w-6 h-6" />
-            <span className="text-xs">Challenge</span>
+            <span className="text-xs">{t.nav.challenge}</span>
           </Button>
           <Button
             variant="ghost"
@@ -1166,7 +1280,7 @@ export default function GlowUpChallengeApp() {
             onClick={() => setCurrentView('journal')}
           >
             <BookOpen className="w-6 h-6" />
-            <span className="text-xs">Journal</span>
+            <span className="text-xs">{t.nav.journal}</span>
           </Button>
           <Button
             variant="ghost"
@@ -1174,7 +1288,7 @@ export default function GlowUpChallengeApp() {
             onClick={() => setCurrentView('trackers')}
           >
             <Target className="w-6 h-6" />
-            <span className="text-xs">Trackers</span>
+            <span className="text-xs">{t.nav.trackers}</span>
           </Button>
           <Button
             variant="ghost"
@@ -1182,7 +1296,7 @@ export default function GlowUpChallengeApp() {
             onClick={() => setCurrentView('settings')}
           >
             <Settings className="w-6 h-6" />
-            <span className="text-xs">Profil</span>
+            <span className="text-xs">{t.nav.settings}</span>
           </Button>
         </div>
       </nav>
@@ -1343,20 +1457,68 @@ export default function GlowUpChallengeApp() {
                   </p>
                 )}
 
-                {/* Steps */}
-                <div className="space-y-3">
-                  {selectedBonusSection.content.steps.map((step, index) => (
-                    <div
-                      key={index}
-                      className={`flex items-start gap-3 p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'}`}
-                    >
-                      <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${theme === 'dark' ? 'bg-stone-700 text-stone-300' : 'bg-white text-stone-600'}`}>
-                        {selectedBonusSection.id === 'limites-paix' ? '•' : index + 1}
+                {/* Steps - Pour les sections normales */}
+                {selectedBonusSection.id !== '50-choses-seule' && selectedBonusSection.content.steps.length > 0 && (
+                  <div className="space-y-3">
+                    {selectedBonusSection.content.steps.map((step, index) => (
+                      <div
+                        key={index}
+                        className={`flex items-start gap-3 p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'}`}
+                      >
+                        <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${theme === 'dark' ? 'bg-stone-700 text-stone-300' : 'bg-white text-stone-600'}`}>
+                          {selectedBonusSection.id === 'limites-paix' ? '•' : index + 1}
+                        </div>
+                        <p className="text-sm flex-1 leading-relaxed">{step}</p>
                       </div>
-                      <p className="text-sm flex-1 leading-relaxed">{step}</p>
+                    ))}
+                  </div>
+                )}
+
+                {/* 50 choses à faire seule - Liste avec fonction de rayer */}
+                {selectedBonusSection.id === '50-choses-seule' && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-sm text-stone-600 dark:text-stone-400">
+                        {completedThingsAlone.length} / {fiftyThingsAlone.length} complétées
+                      </p>
+                      <Badge variant="outline" className="text-xs">
+                        {Math.round((completedThingsAlone.length / fiftyThingsAlone.length) * 100)}%
+                      </Badge>
                     </div>
-                  ))}
-                </div>
+                    {fiftyThingsAlone.map((thing, index) => (
+                      <div
+                        key={index}
+                        onClick={() => toggleThingAlone(index)}
+                        className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all ${
+                          completedThingsAlone.includes(index)
+                            ? theme === 'dark'
+                              ? 'bg-cyan-900/20 hover:bg-cyan-900/30'
+                              : 'bg-cyan-50 hover:bg-cyan-100'
+                            : theme === 'dark'
+                              ? 'bg-stone-800 hover:bg-stone-700'
+                              : 'bg-stone-50 hover:bg-stone-100'
+                        }`}
+                      >
+                        <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                          completedThingsAlone.includes(index)
+                            ? 'bg-cyan-500 text-white'
+                            : theme === 'dark'
+                              ? 'bg-stone-700 text-stone-300'
+                              : 'bg-white text-stone-600'
+                        }`}>
+                          {completedThingsAlone.includes(index) ? '✓' : index + 1}
+                        </div>
+                        <p className={`text-sm flex-1 leading-relaxed transition-all ${
+                          completedThingsAlone.includes(index)
+                            ? 'line-through opacity-60'
+                            : ''
+                        }`}>
+                          {thing}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* Examples (pour la question du soir) */}
                 {selectedBonusSection.content.examples && selectedBonusSection.content.examples.length > 0 && (

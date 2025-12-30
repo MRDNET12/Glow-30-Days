@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Language } from './translations';
 
-export type View = 'onboarding' | 'dashboard' | 'challenge' | 'journal' | 'trackers' | 'routine' | 'vision-board' | 'bonus' | 'settings';
+export type View = 'language-selection' | 'onboarding' | 'dashboard' | 'challenge' | 'journal' | 'trackers' | 'routine' | 'vision-board' | 'bonus' | 'settings';
 
 interface ChallengeProgress {
   completedDays: number[];
@@ -88,6 +89,13 @@ interface AppState {
   setTheme: (theme: 'light' | 'dark') => void;
   notificationsEnabled: boolean;
   setNotificationsEnabled: (enabled: boolean) => void;
+  language: Language;
+  setLanguage: (language: Language) => void;
+  hasSelectedLanguage: boolean;
+
+  // 50 Things Alone
+  completedThingsAlone: number[];
+  toggleThingAlone: (index: number) => void;
 
   // Progress Calculation
   getProgressPercentage: () => number;
@@ -106,7 +114,7 @@ export const useStore = create<AppState>()(
   persist(
     (set, get) => ({
       // Navigation
-      currentView: 'onboarding',
+      currentView: 'language-selection',
       setCurrentView: (view) => set({ currentView: view }),
       currentDay: 1,
       setCurrentDay: (day) => set({ currentDay: day }),
@@ -248,6 +256,20 @@ export const useStore = create<AppState>()(
       setTheme: (theme) => set({ theme }),
       notificationsEnabled: true,
       setNotificationsEnabled: (enabled) => set({ notificationsEnabled: enabled }),
+      language: 'fr',
+      setLanguage: (language) => set({ language, hasSelectedLanguage: true }),
+      hasSelectedLanguage: false,
+
+      // 50 Things Alone
+      completedThingsAlone: [],
+      toggleThingAlone: (index) => {
+        const completed = get().completedThingsAlone;
+        if (completed.includes(index)) {
+          set({ completedThingsAlone: completed.filter(i => i !== index) });
+        } else {
+          set({ completedThingsAlone: [...completed, index] });
+        }
+      },
 
       // Progress Calculation
       getProgressPercentage: () => {
