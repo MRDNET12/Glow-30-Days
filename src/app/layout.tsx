@@ -21,17 +21,30 @@ export const metadata: Metadata = {
   keywords: ["Glow Up", "Challenge", "Self-care", "Beauté", "Mindset", "Transformation personnelle", "Femme", "Bien-être"],
   authors: [{ name: "Glow Up Challenge" }],
   icons: {
-    icon: "/logo.svg",
+    icon: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" }
+    ],
+    apple: "/logo.svg",
   },
   openGraph: {
     title: "Glow Up Challenge - 30 Jours de Transformation",
     description: "Une expérience premium pour devenir la meilleure version de toi-même",
     type: "website",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Glow Up Challenge - 30 Jours de Transformation"
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Glow Up Challenge - 30 Jours de Transformation",
     description: "Une expérience premium pour devenir la meilleure version de toi-même",
+    images: ["/og-image.svg"],
   },
 };
 
