@@ -40,6 +40,12 @@ export interface Translation {
     quickActions: string;
     todayChallenge: string;
     viewDetails: string;
+    week: string;
+    day: string;
+    today: string;
+    steps: string;
+    myBonus: string;
+    affirmationsGuides: string;
   };
   
   // Challenge
@@ -88,6 +94,20 @@ export interface Translation {
     save: string;
     cancel: string;
     confirmDelete: string;
+    entries: string;
+    expressFreely: string;
+    moodLabel: string;
+    moodPlaceholder: string;
+    glowLabel: string;
+    glowPlaceholder: string;
+    learnedLabel: string;
+    learnedPlaceholder: string;
+    freeContentLabel: string;
+    freeContentPlaceholder: string;
+    addEntry: string;
+    history: string;
+    noEntries: string;
+    free: string;
   };
   
   // Trackers
@@ -96,8 +116,10 @@ export interface Translation {
     today: string;
     waterGlasses: string;
     sleepHours: string;
+    sleep: string;
     mood: string;
     activityMinutes: string;
+    activity: string;
     skincare: string;
     habits: string;
     save: string;
@@ -108,6 +130,13 @@ export interface Translation {
     exercise: string;
     reading: string;
     noScrollBeforeSleep: string;
+    hydration: string;
+    glasses: string;
+    hoursPlaceholder: string;
+    minutes: string;
+    activityPlaceholder: string;
+    skincareCompleted: string;
+    dailyRoutine: string;
   };
   
   // Routine
@@ -118,6 +147,11 @@ export interface Translation {
     markComplete: string;
     completed: string;
     save: string;
+    dailyRoutine: string;
+    steps: string;
+    completedToday: string;
+    markWhenDone: string;
+    completedMessage: string;
   };
   
   // Vision Board
@@ -130,6 +164,13 @@ export interface Translation {
     add: string;
     delete: string;
     download: string;
+    images: string;
+    uploadImage: string;
+    captionPlaceholder: string;
+    myImages: string;
+    noImages: string;
+    addInspiringImages: string;
+    dailyAffirmation: string;
   };
   
   // Bonus
@@ -142,6 +183,17 @@ export interface Translation {
     completed: string;
     fiftyThingsAlone: string;
     completedItems: string;
+    writtenAffirmations: string;
+    affirmationsDescription: string;
+    checklistsDescription: string;
+    softLifeGuide: string;
+    softLifeDescription: string;
+    softLifeContent: string;
+    steps: string;
+    practicalTips: string;
+    examples: string;
+    result: string;
+    whyItWorks: string;
   };
   
   // Settings
@@ -155,6 +207,9 @@ export interface Translation {
     disabled: string;
     language: string;
     selectLanguage: string;
+    export: string;
+    exportDescription: string;
+    exportAllData: string;
   };
   
   // Common
@@ -207,6 +262,12 @@ export const translations: Record<Language, Translation> = {
       quickActions: 'Actions rapides',
       todayChallenge: 'Challenge du jour',
       viewDetails: 'Voir les détails',
+      week: 'Semaine',
+      day: 'Jour',
+      today: 'Aujourd\'hui',
+      steps: 'étapes',
+      myBonus: 'Mes Bonus',
+      affirmationsGuides: 'Affirmations & Guides',
     },
     challenge: {
       title: 'Challenge 30 Jours',
@@ -251,14 +312,30 @@ export const translations: Record<Language, Translation> = {
       save: 'Sauvegarder',
       cancel: 'Annuler',
       confirmDelete: 'Êtes-vous sûr de vouloir supprimer cette entrée ?',
+      entries: 'entrées',
+      expressFreely: 'Exprime-toi librement',
+      moodLabel: 'Comment je me sens aujourd\'hui ?',
+      moodPlaceholder: 'Ton humeur du moment...',
+      glowLabel: 'Qu\'est-ce qui m\'a apporté du glow ?',
+      glowPlaceholder: 'Les petits moments de joie...',
+      learnedLabel: 'Qu\'est-ce que j\'ai appris ?',
+      learnedPlaceholder: 'Tes découvertes et apprentissages...',
+      freeContentLabel: 'Journal libre',
+      freeContentPlaceholder: 'Écris tout ce qui te passe par la tête...',
+      addEntry: 'Ajouter au Journal',
+      history: 'Historique',
+      noEntries: 'Aucune entrée pour le moment',
+      free: 'Libre',
     },
     trackers: {
       title: 'Mes Trackers',
       today: 'Aujourd\'hui',
       waterGlasses: 'Verres d\'eau',
       sleepHours: 'Heures de sommeil',
+      sleep: 'Sommeil',
       mood: 'Humeur',
       activityMinutes: 'Minutes d\'activité',
+      activity: 'Activité',
       skincare: 'Routine skincare',
       habits: 'Habitudes',
       save: 'Sauvegarder',
@@ -269,6 +346,13 @@ export const translations: Record<Language, Translation> = {
       exercise: 'Exercice',
       reading: 'Lecture',
       noScrollBeforeSleep: 'Pas de scroll avant de dormir',
+      hydration: 'Hydratation',
+      glasses: 'verres',
+      hoursPlaceholder: 'Nombre d\'heures',
+      minutes: 'min',
+      activityPlaceholder: 'Minutes d\'activité',
+      skincareCompleted: 'Skincare complété',
+      dailyRoutine: 'Routine du jour',
     },
     routine: {
       title: 'Ma Routine',
@@ -277,6 +361,11 @@ export const translations: Record<Language, Translation> = {
       markComplete: 'Marquer comme complété',
       completed: 'Complété aujourd\'hui',
       save: 'Sauvegarder',
+      dailyRoutine: 'Routine Quotidienne',
+      steps: 'étapes',
+      completedToday: 'Routine complétée aujourd\'hui ?',
+      markWhenDone: 'Marque quand tu as fini',
+      completedMessage: 'Routine Glow Up complétée aujourd\'hui ! ✨',
     },
     visionBoard: {
       title: 'Vision Board',
@@ -287,6 +376,13 @@ export const translations: Record<Language, Translation> = {
       add: 'Ajouter',
       delete: 'Supprimer',
       download: 'Télécharger',
+      images: 'images',
+      uploadImage: 'Upload une image qui t\'inspire',
+      captionPlaceholder: 'Une description ou affirmation...',
+      myImages: 'Mes Images',
+      noImages: 'Aucune image pour le moment',
+      addInspiringImages: 'Ajoute des images qui t\'inspirent',
+      dailyAffirmation: 'Affirmation du jour',
     },
     bonus: {
       title: 'Mes Bonus',
@@ -297,6 +393,17 @@ export const translations: Record<Language, Translation> = {
       completed: 'complétées',
       fiftyThingsAlone: '50 choses à faire seule',
       completedItems: 'complétées',
+      writtenAffirmations: 'Affirmations Écrites',
+      affirmationsDescription: 'Des affirmations puissantes pour ton quotidien',
+      checklistsDescription: 'Des listes pour t\'organiser et te motiver',
+      softLifeGuide: 'Mini-Guide Soft Life',
+      softLifeDescription: 'Crée une vie douce et alignée',
+      softLifeContent: '5 étapes pour une vie plus douce',
+      steps: 'étapes',
+      practicalTips: 'Conseils pratiques',
+      examples: 'Exemples',
+      result: 'Résultat',
+      whyItWorks: 'Pourquoi ça marche',
     },
     settings: {
       title: 'Profil',
@@ -308,6 +415,9 @@ export const translations: Record<Language, Translation> = {
       disabled: 'Désactivées',
       language: 'Langue',
       selectLanguage: 'Choisir la langue',
+      export: 'Exporter les données',
+      exportDescription: 'Téléchargez toutes vos données au format JSON',
+      exportAllData: 'Exporter toutes les données',
     },
     common: {
       close: 'Fermer',
@@ -356,6 +466,12 @@ export const translations: Record<Language, Translation> = {
       quickActions: 'Quick actions',
       todayChallenge: 'Today\'s challenge',
       viewDetails: 'View details',
+      week: 'Week',
+      day: 'Day',
+      today: 'Today',
+      steps: 'steps',
+      myBonus: 'My Bonus',
+      affirmationsGuides: 'Affirmations & Guides',
     },
     challenge: {
       title: '30-Day Challenge',
@@ -400,14 +516,30 @@ export const translations: Record<Language, Translation> = {
       save: 'Save',
       cancel: 'Cancel',
       confirmDelete: 'Are you sure you want to delete this entry?',
+      entries: 'entries',
+      expressFreely: 'Express yourself freely',
+      moodLabel: 'How do I feel today?',
+      moodPlaceholder: 'Your current mood...',
+      glowLabel: 'What brought me glow today?',
+      glowPlaceholder: 'Small moments of joy...',
+      learnedLabel: 'What did I learn?',
+      learnedPlaceholder: 'Your discoveries and learnings...',
+      freeContentLabel: 'Free journal',
+      freeContentPlaceholder: 'Write whatever comes to mind...',
+      addEntry: 'Add to Journal',
+      history: 'History',
+      noEntries: 'No entries yet',
+      free: 'Free',
     },
     trackers: {
       title: 'My Trackers',
       today: 'Today',
       waterGlasses: 'Water glasses',
       sleepHours: 'Sleep hours',
+      sleep: 'Sleep',
       mood: 'Mood',
       activityMinutes: 'Activity minutes',
+      activity: 'Activity',
       skincare: 'Skincare routine',
       habits: 'Habits',
       save: 'Save',
@@ -418,6 +550,13 @@ export const translations: Record<Language, Translation> = {
       exercise: 'Exercise',
       reading: 'Reading',
       noScrollBeforeSleep: 'No scrolling before bed',
+      hydration: 'Hydration',
+      glasses: 'glasses',
+      hoursPlaceholder: 'Number of hours',
+      minutes: 'min',
+      activityPlaceholder: 'Activity minutes',
+      skincareCompleted: 'Skincare completed',
+      dailyRoutine: 'Daily routine',
     },
     routine: {
       title: 'My Routine',
@@ -426,6 +565,11 @@ export const translations: Record<Language, Translation> = {
       markComplete: 'Mark as complete',
       completed: 'Completed today',
       save: 'Save',
+      dailyRoutine: 'Daily Routine',
+      steps: 'steps',
+      completedToday: 'Routine completed today?',
+      markWhenDone: 'Mark when done',
+      completedMessage: 'Glow Up Routine completed today! ✨',
     },
     visionBoard: {
       title: 'Vision Board',
@@ -436,6 +580,13 @@ export const translations: Record<Language, Translation> = {
       add: 'Add',
       delete: 'Delete',
       download: 'Download',
+      images: 'images',
+      uploadImage: 'Upload an image that inspires you',
+      captionPlaceholder: 'A description or affirmation...',
+      myImages: 'My Images',
+      noImages: 'No images yet',
+      addInspiringImages: 'Add images that inspire you',
+      dailyAffirmation: 'Daily affirmation',
     },
     bonus: {
       title: 'My Bonuses',
@@ -446,6 +597,17 @@ export const translations: Record<Language, Translation> = {
       completed: 'completed',
       fiftyThingsAlone: '50 things to do alone',
       completedItems: 'completed',
+      writtenAffirmations: 'Written Affirmations',
+      affirmationsDescription: 'Powerful affirmations for your daily life',
+      checklistsDescription: 'Lists to organize and motivate you',
+      softLifeGuide: 'Soft Life Mini-Guide',
+      softLifeDescription: 'Create a gentle and aligned life',
+      softLifeContent: '5 steps for a softer life',
+      steps: 'steps',
+      practicalTips: 'Practical Tips',
+      examples: 'Examples',
+      result: 'Result',
+      whyItWorks: 'Why it works',
     },
     settings: {
       title: 'Profile',
@@ -457,6 +619,9 @@ export const translations: Record<Language, Translation> = {
       disabled: 'Disabled',
       language: 'Language',
       selectLanguage: 'Choose language',
+      export: 'Export data',
+      exportDescription: 'Download all your data in JSON format',
+      exportAllData: 'Export all data',
     },
     common: {
       close: 'Close',
@@ -505,6 +670,12 @@ export const translations: Record<Language, Translation> = {
       quickActions: 'Acciones rápidas',
       todayChallenge: 'Desafío de hoy',
       viewDetails: 'Ver detalles',
+      week: 'Semana',
+      day: 'Día',
+      today: 'Hoy',
+      steps: 'pasos',
+      myBonus: 'Mis Bonus',
+      affirmationsGuides: 'Afirmaciones y Guías',
     },
     challenge: {
       title: 'Desafío de 30 Días',
@@ -549,14 +720,30 @@ export const translations: Record<Language, Translation> = {
       save: 'Guardar',
       cancel: 'Cancelar',
       confirmDelete: '¿Estás segura de que quieres eliminar esta entrada?',
+      entries: 'entradas',
+      expressFreely: 'Exprésate libremente',
+      moodLabel: '¿Cómo me siento hoy?',
+      moodPlaceholder: 'Tu estado de ánimo actual...',
+      glowLabel: '¿Qué me trajo brillo hoy?',
+      glowPlaceholder: 'Pequeños momentos de alegría...',
+      learnedLabel: '¿Qué aprendí?',
+      learnedPlaceholder: 'Tus descubrimientos y aprendizajes...',
+      freeContentLabel: 'Diario libre',
+      freeContentPlaceholder: 'Escribe lo que se te ocurra...',
+      addEntry: 'Agregar al Diario',
+      history: 'Historial',
+      noEntries: 'Sin entradas aún',
+      free: 'Libre',
     },
     trackers: {
       title: 'Mis Rastreadores',
       today: 'Hoy',
       waterGlasses: 'Vasos de agua',
       sleepHours: 'Horas de sueño',
+      sleep: 'Sueño',
       mood: 'Estado de ánimo',
       activityMinutes: 'Minutos de actividad',
+      activity: 'Actividad',
       skincare: 'Rutina de cuidado de la piel',
       habits: 'Hábitos',
       save: 'Guardar',
@@ -567,6 +754,13 @@ export const translations: Record<Language, Translation> = {
       exercise: 'Ejercicio',
       reading: 'Lectura',
       noScrollBeforeSleep: 'No desplazarse antes de dormir',
+      hydration: 'Hidratación',
+      glasses: 'vasos',
+      hoursPlaceholder: 'Número de horas',
+      minutes: 'min',
+      activityPlaceholder: 'Minutos de actividad',
+      skincareCompleted: 'Skincare completado',
+      dailyRoutine: 'Rutina diaria',
     },
     routine: {
       title: 'Mi Rutina',
@@ -575,6 +769,11 @@ export const translations: Record<Language, Translation> = {
       markComplete: 'Marcar como completado',
       completed: 'Completado hoy',
       save: 'Guardar',
+      dailyRoutine: 'Rutina diaria',
+      steps: 'pasos',
+      completedToday: '¿Rutina completada hoy?',
+      markWhenDone: 'Marcar cuando termines',
+      completedMessage: '¡Rutina Glow Up completada hoy! ✨',
     },
     visionBoard: {
       title: 'Tablero de Visión',
@@ -585,6 +784,13 @@ export const translations: Record<Language, Translation> = {
       add: 'Agregar',
       delete: 'Eliminar',
       download: 'Descargar',
+      images: 'imágenes',
+      uploadImage: 'Subir una imagen que te inspire',
+      captionPlaceholder: 'Una descripción o afirmación...',
+      myImages: 'Mis Imágenes',
+      noImages: 'Sin imágenes aún',
+      addInspiringImages: 'Agrega imágenes que te inspiren',
+      dailyAffirmation: 'Afirmación del día',
     },
     bonus: {
       title: 'Mis Bonus',
@@ -595,6 +801,17 @@ export const translations: Record<Language, Translation> = {
       completed: 'completadas',
       fiftyThingsAlone: '50 cosas para hacer sola',
       completedItems: 'completadas',
+      writtenAffirmations: 'Afirmaciones Escritas',
+      affirmationsDescription: 'Afirmaciones poderosas para tu vida diaria',
+      checklistsDescription: 'Listas para organizarte y motivarte',
+      softLifeGuide: 'Mini-Guía de Vida Suave',
+      softLifeDescription: 'Crea una vida suave y alineada',
+      softLifeContent: '5 pasos para una vida más suave',
+      steps: 'pasos',
+      practicalTips: 'Consejos prácticos',
+      examples: 'Ejemplos',
+      result: 'Resultado',
+      whyItWorks: 'Por qué funciona',
     },
     settings: {
       title: 'Perfil',
@@ -606,6 +823,9 @@ export const translations: Record<Language, Translation> = {
       disabled: 'Desactivadas',
       language: 'Idioma',
       selectLanguage: 'Elegir idioma',
+      export: 'Exportar datos',
+      exportDescription: 'Descarga todos tus datos en formato JSON',
+      exportAllData: 'Exportar todos los datos',
     },
     common: {
       close: 'Cerrar',
