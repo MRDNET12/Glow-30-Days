@@ -8,6 +8,8 @@ interface ChallengeProgress {
   completedDays: number[];
   currentDay: number;
   notes: Record<number, string>;
+  startDate: string | null; // Date de début du challenge (YYYY-MM-DD)
+  lastCompletedDate: string | null; // Dernière date de complétion (YYYY-MM-DD)
 }
 
 interface JournalEntry {
@@ -60,6 +62,8 @@ interface AppState {
   challengeProgress: ChallengeProgress;
   toggleDayCompletion: (day: number) => void;
   updateDayNotes: (day: number, notes: string) => void;
+  canAccessDay: (day: number) => boolean;
+  getCurrentUnlockedDay: () => number;
 
   // Journal
   journalEntries: JournalEntry[];
@@ -121,16 +125,29 @@ export const useStore = create<AppState>()(
 
       // Onboarding
       hasStarted: false,
-      startChallenge: () => set({ hasStarted: true, currentView: 'dashboard' }),
+      startChallenge: () => {
+        const today = new Date().toISOString().split('T')[0];
+        set({
+          hasStarted: true,
+          currentView: 'dashboard',
+          challengeProgress: {
+            ...get().challengeProgress,
+            startDate: today
+          }
+        });
+      },
 
       // Challenge Progress
       challengeProgress: {
         completedDays: [],
         currentDay: 1,
-        notes: {}
+        notes: {},
+        startDate: null,
+        lastCompletedDate: null
       },
       toggleDayCompletion: (day) => {
         const { completedDays, currentDay } = get().challengeProgress;
+        const today = new Date().toISOString().split('T')[0];
         const isCompleted = completedDays.includes(day);
         const newCompletedDays = isCompleted
           ? completedDays.filter((d) => d !== day)
@@ -149,7 +166,8 @@ export const useStore = create<AppState>()(
           challengeProgress: {
             ...get().challengeProgress,
             completedDays: newCompletedDays,
-            currentDay: nextDay
+            currentDay: nextDay,
+            lastCompletedDate: !isCompleted ? today : get().challengeProgress.lastCompletedDate
           }
         });
       },
@@ -160,6 +178,48 @@ export const useStore = create<AppState>()(
             notes: { ...get().challengeProgress.notes, [day]: notes }
           }
         });
+      },
+      canAccessDay: (day) => {
+        const { completedDays, startDate } = get().challengeProgress;
+
+        // Si pas de date de début, on peut accéder au jour 1 seulement
+        if (!startDate) return day === 1;
+
+        // Calculer le nombre de jours depuis le début
+        const start = new Date(startDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        start.setHours(0, 0, 0, 0);
+
+        const daysSinceStart = Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+
+        // On peut accéder aux jours déjà complétés
+        if (completedDays.includes(day)) return true;
+
+        // On peut accéder au jour actuel si on a complété tous les jours précédents
+        if (day <= daysSinceStart + 1) {
+          // Vérifier que tous les jours précédents sont complétés
+          for (let i = 1; i < day; i++) {
+            if (!completedDays.includes(i)) return false;
+          }
+          return true;
+        }
+
+        return false;
+      },
+      getCurrentUnlockedDay: () => {
+        const { completedDays, startDate } = get().challengeProgress;
+
+        if (!startDate) return 1;
+
+        // Trouver le premier jour non complété
+        for (let i = 1; i <= 30; i++) {
+          if (!completedDays.includes(i)) {
+            return i;
+          }
+        }
+
+        return 30; // Tous les jours sont complétés
       },
 
       // Journal

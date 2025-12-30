@@ -54,6 +54,23 @@ export interface Translation {
     addNotes: string;
     saveNotes: string;
     viewDay: string;
+    congratulations: string;
+    dayCompletedTitle: string;
+    dayCompletedMessage: string;
+    seeYouTomorrow: string;
+    keepGoing: string;
+    lockedDay: string;
+    completeCurrentDay: string;
+    week: string;
+    yourDailyActions: string;
+    beauty: string;
+    mental: string;
+    lifestyle: string;
+    notesPlaceholder: string;
+    completedButton: string;
+    completeButton: string;
+    progression: string;
+    days: string;
   };
   
   // Journal
@@ -84,6 +101,13 @@ export interface Translation {
     skincare: string;
     habits: string;
     save: string;
+    dailyHabits: string;
+    meditation5min: string;
+    journaling: string;
+    gratitude: string;
+    exercise: string;
+    reading: string;
+    noScrollBeforeSleep: string;
   };
   
   // Routine
@@ -116,6 +140,8 @@ export interface Translation {
     miniGuide: string;
     duration: string;
     completed: string;
+    fiftyThingsAlone: string;
+    completedItems: string;
   };
   
   // Settings
@@ -193,6 +219,23 @@ export const translations: Record<Language, Translation> = {
       addNotes: 'Ajouter des notes',
       saveNotes: 'Sauvegarder les notes',
       viewDay: 'Voir le jour',
+      congratulations: 'Félicitations ! 🎉',
+      dayCompletedTitle: 'Jour complété avec succès !',
+      dayCompletedMessage: 'Tu as terminé le défi d\'aujourd\'hui. Continue comme ça !',
+      seeYouTomorrow: 'On se retrouve demain pour le prochain défi ! 💪',
+      keepGoing: 'Continue ton Glow Up !',
+      lockedDay: 'Jour verrouillé',
+      completeCurrentDay: 'Complète d\'abord le jour actuel pour débloquer celui-ci.',
+      week: 'Semaine',
+      yourDailyActions: 'Tes Actions du Jour',
+      beauty: 'Beauté',
+      mental: 'Mental',
+      lifestyle: 'Lifestyle',
+      notesPlaceholder: 'Note tes pensées, tes ressentis...',
+      completedButton: 'Jour Complété ✓',
+      completeButton: 'J\'ai complété ce jour',
+      progression: 'Progression',
+      days: 'jours',
     },
     journal: {
       title: 'Mon Journal',
@@ -219,6 +262,13 @@ export const translations: Record<Language, Translation> = {
       skincare: 'Routine skincare',
       habits: 'Habitudes',
       save: 'Sauvegarder',
+      dailyHabits: 'Habitudes quotidiennes',
+      meditation5min: 'Méditation 5 min',
+      journaling: 'Journaling',
+      gratitude: 'Gratitude',
+      exercise: 'Exercice',
+      reading: 'Lecture',
+      noScrollBeforeSleep: 'Pas de scroll avant de dormir',
     },
     routine: {
       title: 'Ma Routine',
@@ -245,6 +295,8 @@ export const translations: Record<Language, Translation> = {
       miniGuide: 'Mini-Guide',
       duration: 'Durée',
       completed: 'complétées',
+      fiftyThingsAlone: '50 choses à faire seule',
+      completedItems: 'complétées',
     },
     settings: {
       title: 'Profil',
@@ -316,6 +368,23 @@ export const translations: Record<Language, Translation> = {
       addNotes: 'Add notes',
       saveNotes: 'Save notes',
       viewDay: 'View day',
+      congratulations: 'Congratulations! 🎉',
+      dayCompletedTitle: 'Day completed successfully!',
+      dayCompletedMessage: 'You\'ve finished today\'s challenge. Keep it up!',
+      seeYouTomorrow: 'See you tomorrow for the next challenge! 💪',
+      keepGoing: 'Keep up your Glow Up!',
+      lockedDay: 'Locked day',
+      completeCurrentDay: 'Complete the current day first to unlock this one.',
+      week: 'Week',
+      yourDailyActions: 'Your Daily Actions',
+      beauty: 'Beauty',
+      mental: 'Mental',
+      lifestyle: 'Lifestyle',
+      notesPlaceholder: 'Write your thoughts, feelings...',
+      completedButton: 'Day Completed ✓',
+      completeButton: 'I completed this day',
+      progression: 'Progress',
+      days: 'days',
     },
     journal: {
       title: 'My Journal',
@@ -342,6 +411,13 @@ export const translations: Record<Language, Translation> = {
       skincare: 'Skincare routine',
       habits: 'Habits',
       save: 'Save',
+      dailyHabits: 'Daily Habits',
+      meditation5min: '5 min Meditation',
+      journaling: 'Journaling',
+      gratitude: 'Gratitude',
+      exercise: 'Exercise',
+      reading: 'Reading',
+      noScrollBeforeSleep: 'No scrolling before bed',
     },
     routine: {
       title: 'My Routine',
@@ -368,6 +444,8 @@ export const translations: Record<Language, Translation> = {
       miniGuide: 'Mini-Guide',
       duration: 'Duration',
       completed: 'completed',
+      fiftyThingsAlone: '50 things to do alone',
+      completedItems: 'completed',
     },
     settings: {
       title: 'Profile',
@@ -439,6 +517,23 @@ export const translations: Record<Language, Translation> = {
       addNotes: 'Agregar notas',
       saveNotes: 'Guardar notas',
       viewDay: 'Ver día',
+      congratulations: '¡Felicitaciones! 🎉',
+      dayCompletedTitle: '¡Día completado con éxito!',
+      dayCompletedMessage: 'Has terminado el desafío de hoy. ¡Sigue así!',
+      seeYouTomorrow: '¡Nos vemos mañana para el próximo desafío! 💪',
+      keepGoing: '¡Continúa tu Glow Up!',
+      lockedDay: 'Día bloqueado',
+      completeCurrentDay: 'Completa primero el día actual para desbloquear este.',
+      week: 'Semana',
+      yourDailyActions: 'Tus Acciones del Día',
+      beauty: 'Belleza',
+      mental: 'Mental',
+      lifestyle: 'Estilo de vida',
+      notesPlaceholder: 'Escribe tus pensamientos, sentimientos...',
+      completedButton: 'Día Completado ✓',
+      completeButton: 'He completado este día',
+      progression: 'Progreso',
+      days: 'días',
     },
     journal: {
       title: 'Mi Diario',
@@ -465,6 +560,13 @@ export const translations: Record<Language, Translation> = {
       skincare: 'Rutina de cuidado de la piel',
       habits: 'Hábitos',
       save: 'Guardar',
+      dailyHabits: 'Hábitos diarios',
+      meditation5min: 'Meditación 5 min',
+      journaling: 'Diario personal',
+      gratitude: 'Gratitud',
+      exercise: 'Ejercicio',
+      reading: 'Lectura',
+      noScrollBeforeSleep: 'No desplazarse antes de dormir',
     },
     routine: {
       title: 'Mi Rutina',
@@ -491,6 +593,8 @@ export const translations: Record<Language, Translation> = {
       miniGuide: 'Mini-Guía',
       duration: 'Duración',
       completed: 'completadas',
+      fiftyThingsAlone: '50 cosas para hacer sola',
+      completedItems: 'completadas',
     },
     settings: {
       title: 'Perfil',

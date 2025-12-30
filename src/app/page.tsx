@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export default function GlowUpChallengeApp() {
   const {
@@ -51,10 +52,15 @@ export default function GlowUpChallengeApp() {
     toggleThingAlone,
     language,
     setLanguage,
-    hasSelectedLanguage
+    hasSelectedLanguage,
+    canAccessDay,
+    getCurrentUnlockedDay
   } = useStore();
 
   const { t } = useTranslation();
+
+  // État pour le dialog de félicitations
+  const [showCongratulations, setShowCongratulations] = useState(false);
 
   const [todayDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [newJournalEntry, setNewJournalEntry] = useState({
@@ -80,7 +86,13 @@ export default function GlowUpChallengeApp() {
   const getCurrentDayData = () => challengeDays.find((d) => d.day === currentDay);
 
   const handleCompleteDay = () => {
+    const wasCompleted = challengeProgress.completedDays.includes(currentDay);
     toggleDayCompletion(currentDay);
+
+    // Afficher les félicitations seulement si on vient de compléter (pas de décompléter)
+    if (!wasCompleted) {
+      setShowCongratulations(true);
+    }
   };
 
   const handleSaveJournalEntry = () => {
@@ -372,54 +384,91 @@ export default function GlowUpChallengeApp() {
                 <X className="w-5 h-5" />
               </Button>
               <div className="flex-1">
-                <h1 className="text-2xl font-bold">Challenge 30 Jours</h1>
-                <p className="text-sm text-stone-500 dark:text-stone-500">Jour {currentDay} / 30</p>
+                <h1 className="text-2xl font-bold">{t.challenge.title}</h1>
+                <p className="text-sm text-stone-500 dark:text-stone-500">{t.challenge.day} {currentDay} / 30</p>
               </div>
             </div>
 
             {/* Day Selector */}
             <ScrollArea className="h-24 w-full">
               <div className="flex gap-2 pb-4">
-                {challengeDays.map((day) => (
-                  <Button
-                    key={day.day}
-                    variant={currentDay === day.day ? 'default' : 'outline'}
-                    size="sm"
-                    className={`min-w-12 ${currentDay === day.day ? 'bg-rose-500 hover:bg-rose-600' : ''}`}
-                    onClick={() => setCurrentDay(day.day)}
-                  >
-                    {day.day}
-                  </Button>
-                ))}
+                {challengeDays.map((day) => {
+                  const isLocked = !canAccessDay(day.day);
+                  const isCompleted = challengeProgress.completedDays.includes(day.day);
+
+                  return (
+                    <Button
+                      key={day.day}
+                      variant={currentDay === day.day ? 'default' : 'outline'}
+                      size="sm"
+                      disabled={isLocked}
+                      className={`min-w-12 relative ${
+                        currentDay === day.day
+                          ? 'bg-rose-500 hover:bg-rose-600'
+                          : isCompleted
+                            ? 'bg-green-100 dark:bg-green-900 border-green-400'
+                            : isLocked
+                              ? 'opacity-40'
+                              : ''
+                      }`}
+                      onClick={() => !isLocked && setCurrentDay(day.day)}
+                    >
+                      {isCompleted && <Check className="w-3 h-3 absolute top-0 right-0 text-green-600" />}
+                      {isLocked && <span className="text-xs">🔒</span>}
+                      {!isLocked && !isCompleted && day.day}
+                      {!isLocked && isCompleted && day.day}
+                    </Button>
+                  );
+                })}
               </div>
             </ScrollArea>
 
             {/* Day Content */}
             {getCurrentDayData() && (
               <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <Badge className="bg-gradient-to-r from-rose-400 to-pink-400 mb-2">Semaine {getCurrentDayData()?.week}</Badge>
-                      <CardTitle className="text-2xl mb-2">{getCurrentDayData()?.title}</CardTitle>
-                      <CardDescription className="text-sm">{getCurrentDayData()?.weekObjective}</CardDescription>
+                {!canAccessDay(currentDay) ? (
+                  // Jour verrouillé
+                  <CardContent className="p-12 text-center space-y-4">
+                    <div className="w-20 h-20 mx-auto rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center">
+                      <span className="text-4xl">🔒</span>
                     </div>
-                    <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        challengeProgress.completedDays.includes(currentDay)
-                          ? 'bg-green-100 dark:bg-green-900'
-                          : 'bg-stone-100 dark:bg-stone-800'
-                      }`}
+                    <h3 className="text-xl font-bold">{t.challenge.lockedDay}</h3>
+                    <p className="text-stone-600 dark:text-stone-400">
+                      {t.challenge.completeCurrentDay}
+                    </p>
+                    <Button
+                      onClick={() => setCurrentDay(getCurrentUnlockedDay())}
+                      className="bg-gradient-to-r from-rose-400 via-pink-400 to-orange-300 hover:from-rose-500 hover:via-pink-500 hover:to-orange-400 text-white"
                     >
-                      {challengeProgress.completedDays.includes(currentDay) ? (
-                        <Check className="w-6 h-6 text-green-600 dark:text-green-400" />
-                      ) : (
-                        <span className="text-2xl">{currentDay}</span>
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
+                      {t.challenge.viewDay} {getCurrentUnlockedDay()}
+                    </Button>
+                  </CardContent>
+                ) : (
+                  // Jour accessible
+                  <>
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <Badge className="bg-gradient-to-r from-rose-400 to-pink-400 mb-2">{t.challenge.week} {getCurrentDayData()?.week}</Badge>
+                          <CardTitle className="text-2xl mb-2">{getCurrentDayData()?.title}</CardTitle>
+                          <CardDescription className="text-sm">{getCurrentDayData()?.weekObjective}</CardDescription>
+                        </div>
+                        <div
+                          className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                            challengeProgress.completedDays.includes(currentDay)
+                              ? 'bg-green-100 dark:bg-green-900'
+                              : 'bg-stone-100 dark:bg-stone-800'
+                          }`}
+                        >
+                          {challengeProgress.completedDays.includes(currentDay) ? (
+                            <Check className="w-6 h-6 text-green-600 dark:text-green-400" />
+                          ) : (
+                            <span className="text-2xl">{currentDay}</span>
+                          )}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
                   {/* Description */}
                   <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'}`}>
                     <p className="text-lg leading-relaxed">{getCurrentDayData()?.content}</p>
@@ -434,14 +483,14 @@ export default function GlowUpChallengeApp() {
                   <div className="space-y-4">
                     <h3 className="font-semibold flex items-center gap-2">
                       <Sparkles className="w-5 h-5 text-rose-400" />
-                      Tes Actions du Jour
+                      {t.challenge.yourDailyActions}
                     </h3>
 
                     <div className="grid gap-3">
                       {[
-                        { label: 'Beauté', icon: '💄', value: getCurrentDayData()?.actions.beauty },
-                        { label: 'Mental', icon: '🧠', value: getCurrentDayData()?.actions.mental },
-                        { label: 'Lifestyle', icon: '✨', value: getCurrentDayData()?.actions.lifestyle }
+                        { label: t.challenge.beauty, icon: '💄', value: getCurrentDayData()?.actions.beauty },
+                        { label: t.challenge.mental, icon: '🧠', value: getCurrentDayData()?.actions.mental },
+                        { label: t.challenge.lifestyle, icon: '✨', value: getCurrentDayData()?.actions.lifestyle }
                       ].map((action, index) => (
                         <div key={index} className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'}`}>
                           <div className="flex items-start gap-3">
@@ -458,9 +507,9 @@ export default function GlowUpChallengeApp() {
 
                   {/* Notes */}
                   <div className="space-y-2">
-                    <label className="font-semibold text-sm">Notes du jour</label>
+                    <label className="font-semibold text-sm">{t.challenge.notes}</label>
                     <Textarea
-                      placeholder="Note tes pensées, tes ressentis..."
+                      placeholder={t.challenge.notesPlaceholder}
                       value={challengeProgress.notes[currentDay] || ''}
                       onChange={(e) => updateDayNotes(currentDay, e.target.value)}
                       rows={4}
@@ -480,16 +529,18 @@ export default function GlowUpChallengeApp() {
                     {challengeProgress.completedDays.includes(currentDay) ? (
                       <>
                         <Check className="mr-2 w-5 h-5" />
-                        Jour Complété ✓
+                        {t.challenge.completedButton}
                       </>
                     ) : (
                       <>
                         <Sparkles className="mr-2 w-5 h-5" />
-                        J'ai complété ce jour
+                        {t.challenge.completeButton}
                       </>
                     )}
                   </Button>
                 </CardContent>
+                  </>
+                )}
               </Card>
             )}
           </div>
@@ -750,24 +801,24 @@ export default function GlowUpChallengeApp() {
                 <div className="space-y-3">
                   <h3 className="font-semibold flex items-center gap-2">
                     <Lightbulb className="w-5 h-5 text-green-400" />
-                    Habitudes quotidiennes
+                    {t.trackers.dailyHabits}
                   </h3>
                   <div className="space-y-2">
                     {[
-                      'Méditation 5 min',
-                      'Journaling',
-                      'Gratitude',
-                      'Exercice',
-                      'Lecture',
-                      'Pas de scroll avant de dormir'
+                      { key: 'meditation', label: t.trackers.meditation5min },
+                      { key: 'journaling', label: t.trackers.journaling },
+                      { key: 'gratitude', label: t.trackers.gratitude },
+                      { key: 'exercise', label: t.trackers.exercise },
+                      { key: 'reading', label: t.trackers.reading },
+                      { key: 'noScroll', label: t.trackers.noScrollBeforeSleep }
                     ].map((habit) => (
-                      <div key={habit} className="flex items-center justify-between p-3 rounded-lg bg-stone-50 dark:bg-stone-800">
-                        <span className="text-sm">{habit}</span>
+                      <div key={habit.key} className="flex items-center justify-between p-3 rounded-lg bg-stone-50 dark:bg-stone-800">
+                        <span className="text-sm">{habit.label}</span>
                         <Switch
-                          checked={getTodayTracker().habits[habit] || false}
+                          checked={getTodayTracker().habits[habit.key] || false}
                           onCheckedChange={(checked) =>
                             updateTodayTracker({
-                              habits: { ...getTodayTracker().habits, [habit]: checked }
+                              habits: { ...getTodayTracker().habits, [habit.key]: checked }
                             })
                           }
                         />
@@ -1479,7 +1530,7 @@ export default function GlowUpChallengeApp() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between mb-4">
                       <p className="text-sm text-stone-600 dark:text-stone-400">
-                        {completedThingsAlone.length} / {fiftyThingsAlone.length} complétées
+                        {completedThingsAlone.length} / {fiftyThingsAlone.length} {t.bonus.completedItems}
                       </p>
                       <Badge variant="outline" className="text-xs">
                         {Math.round((completedThingsAlone.length / fiftyThingsAlone.length) * 100)}%
@@ -1554,6 +1605,60 @@ export default function GlowUpChallengeApp() {
           </div>
         </DrawerContent>
       </Drawer>
+
+      {/* Dialog de Félicitations */}
+      <Dialog open={showCongratulations} onOpenChange={setShowCongratulations}>
+        <DialogContent className={`max-w-sm ${theme === 'dark' ? 'bg-stone-900 border-stone-800' : 'bg-white'}`}>
+          <DialogHeader>
+            <DialogTitle className="text-center text-2xl">
+              {t.challenge.congratulations}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            {/* Animation de célébration */}
+            <div className="flex justify-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-r from-rose-400 via-pink-400 to-orange-300 flex items-center justify-center animate-pulse">
+                <Sparkles className="w-12 h-12 text-white" />
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className="text-center space-y-2">
+              <h3 className="text-xl font-bold">{t.challenge.dayCompletedTitle}</h3>
+              <p className="text-stone-600 dark:text-stone-400">
+                {t.challenge.dayCompletedMessage}
+              </p>
+              <p className="text-lg font-semibold text-rose-500">
+                {t.challenge.seeYouTomorrow}
+              </p>
+            </div>
+
+            {/* Progression */}
+            <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'}`}>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="font-semibold">{t.challenge.progression}</span>
+                <span className="text-rose-500 font-bold">
+                  {challengeProgress.completedDays.length}/30 {t.challenge.days}
+                </span>
+              </div>
+              <div className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-2">
+                <div
+                  className="bg-gradient-to-r from-rose-400 via-pink-400 to-orange-300 h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${(challengeProgress.completedDays.length / 30) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Bouton */}
+            <Button
+              onClick={() => setShowCongratulations(false)}
+              className="w-full bg-gradient-to-r from-rose-400 via-pink-400 to-orange-300 hover:from-rose-500 hover:via-pink-500 hover:to-orange-400 text-white"
+            >
+              {t.challenge.keepGoing}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <style jsx global>{`
         .safe-area-pb {
