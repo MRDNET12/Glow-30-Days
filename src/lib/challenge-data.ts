@@ -475,3 +475,218 @@ export const softLifeTips = [
   "Ajoute des fleurs fraîches à ton espace",
   "Pratique la respiration profonde quand tu es stressée"
 ];
+
+// Checklists détaillées
+export const checklistsData = [
+  {
+    id: 'morning-routine',
+    title: 'Morning Routine',
+    icon: '☀️',
+    description: 'Commence ta journée avec intention et douceur',
+    items: [
+      { text: 'Boire un grand verre d\'eau citronnée', checked: false },
+      { text: 'Étirements doux pendant 5 minutes', checked: false },
+      { text: 'Méditation ou respiration profonde (3-5 min)', checked: false },
+      { text: 'Routine skincare complète', checked: false },
+      { text: 'Petit-déjeuner nutritif et équilibré', checked: false },
+      { text: 'Écrire 3 gratitudes du jour', checked: false },
+      { text: 'Affirmation positive devant le miroir', checked: false },
+      { text: 'Planifier les 3 priorités de la journée', checked: false }
+    ]
+  },
+  {
+    id: 'evening-routine',
+    title: 'Evening Routine',
+    icon: '🌙',
+    description: 'Termine ta journée en beauté et prépare un sommeil réparateur',
+    items: [
+      { text: 'Ranger ton espace (15 min max)', checked: false },
+      { text: 'Préparer l\'outfit du lendemain', checked: false },
+      { text: 'Double nettoyage du visage', checked: false },
+      { text: 'Routine skincare du soir complète', checked: false },
+      { text: 'Journaling : noter 3 moments positifs', checked: false },
+      { text: 'Lecture inspirante (10-15 min)', checked: false },
+      { text: 'Tisane relaxante ou lait doré', checked: false },
+      { text: 'Éteindre les écrans 30 min avant de dormir', checked: false },
+      { text: 'Méditation ou musique douce', checked: false }
+    ]
+  },
+  {
+    id: 'weekly-selfcare',
+    title: 'Weekly Self-Care',
+    icon: '💆‍♀️',
+    description: 'Prends soin de toi chaque semaine avec ces rituels',
+    items: [
+      { text: 'Masque visage hydratant ou purifiant', checked: false },
+      { text: 'Gommage corps sous la douche', checked: false },
+      { text: 'Soin des cheveux (masque ou huile)', checked: false },
+      { text: 'Manucure/pédicure maison', checked: false },
+      { text: 'Bain relaxant avec sels ou huiles', checked: false },
+      { text: 'Session yoga ou stretching (30 min)', checked: false },
+      { text: 'Faire le tri dans ton espace', checked: false },
+      { text: 'Préparer tes repas healthy pour la semaine', checked: false },
+      { text: 'Moment créatif (dessin, écriture, musique)', checked: false },
+      { text: 'Appeler un proche qui te fait du bien', checked: false }
+    ]
+  },
+  {
+    id: 'monthly-goals',
+    title: 'Monthly Goals',
+    icon: '🎯',
+    description: 'Fixe et atteins tes objectifs mensuels',
+    items: [
+      { text: 'Définir 3 objectifs principaux du mois', checked: false },
+      { text: 'Créer un vision board pour le mois', checked: false },
+      { text: 'Planifier les étapes concrètes', checked: false },
+      { text: 'Bloquer du temps dans ton agenda', checked: false },
+      { text: 'Identifier les obstacles potentiels', checked: false },
+      { text: 'Célébrer les victoires de la semaine', checked: false },
+      { text: 'Ajuster la stratégie si nécessaire', checked: false },
+      { text: 'Faire un bilan de progression', checked: false },
+      { text: 'Récompenser tes efforts', checked: false },
+      { text: 'Préparer les intentions du mois suivant', checked: false }
+    ]
+  }
+];
+
+// Mini-Guide Soft Life en 5 étapes
+export const softLifeGuide = {
+  title: 'Mini-Guide Soft Life',
+  subtitle: 'Crée une vie douce, alignée et épanouie en 5 étapes',
+  steps: [
+    {
+      number: 1,
+      title: 'Ralentis et Respire',
+      icon: '🌸',
+      description: 'La soft life commence par ralentir le rythme',
+      content: 'Apprends à dire non aux choses qui ne te servent pas. Crée des moments de pause dans ta journée : 5 minutes de respiration profonde le matin, une pause thé sans écran l\'après-midi, 10 minutes de méditation le soir. La douceur commence quand tu arrêtes de courir.',
+      tips: [
+        'Bloque des "rendez-vous avec toi-même" dans ton agenda',
+        'Pratique la respiration 4-7-8 (inspire 4s, retiens 7s, expire 8s)',
+        'Crée une playlist "slow living" pour tes moments calmes'
+      ]
+    },
+    {
+      number: 2,
+      title: 'Crée un Espace Sacré',
+      icon: '🕯️',
+      description: 'Ton environnement influence ton énergie',
+      content: 'Transforme ton espace en sanctuaire. Désencombre, ajoute des bougies parfumées, des plantes, des textures douces. Choisis des couleurs apaisantes (beige, blanc cassé, rose poudré). Ton espace doit te faire sentir en paix dès que tu y entres.',
+      tips: [
+        'Règle des 3 : garde seulement ce qui est beau, utile ou significatif',
+        'Ajoute des fleurs fraîches chaque semaine',
+        'Investis dans de belles serviettes et draps doux',
+        'Crée un coin lecture/méditation cosy'
+      ]
+    },
+    {
+      number: 3,
+      title: 'Nourris Ton Corps avec Amour',
+      icon: '🥗',
+      description: 'La soft life passe par prendre soin de ton temple',
+      content: 'Mange des aliments qui te font du bien, pas juste ce qui est rapide. Prépare tes repas avec intention. Hydrate-toi. Bouge ton corps avec douceur (yoga, marche, danse). Dors suffisamment. Ton corps mérite d\'être traité comme une reine.',
+      tips: [
+        'Prépare des "aesthetic meals" qui nourrissent corps et âme',
+        'Bois de l\'eau dans un joli verre ou une bouteille cute',
+        'Fais du sport une célébration, pas une punition',
+        'Crée une routine skincare qui te fait plaisir'
+      ]
+    },
+    {
+      number: 4,
+      title: 'Protège Ton Énergie',
+      icon: '✨',
+      description: 'Choisis consciemment ce que tu consommes',
+      content: 'Fais le tri dans tes relations, ton feed Instagram, tes conversations. Entoure-toi de personnes qui t\'élèvent. Consomme du contenu inspirant. Limite les nouvelles négatives. Apprends à mettre des limites saines. Ton énergie est précieuse.',
+      tips: [
+        'Unfollow tout ce qui ne t\'inspire pas ou te fait sentir mal',
+        'Crée des playlists qui élèvent ton mood',
+        'Pratique le "non" sans culpabilité',
+        'Entoure-toi de personnes qui célèbrent ta croissance'
+      ]
+    },
+    {
+      number: 5,
+      title: 'Cultive la Gratitude et la Joie',
+      icon: '💖',
+      description: 'La soft life est un état d\'esprit',
+      content: 'Célèbre les petites victoires. Écris tes gratitudes quotidiennes. Trouve de la beauté dans l\'ordinaire. Ris souvent. Sois douce avec toi-même. La vie douce n\'est pas parfaite, elle est intentionnelle et remplie de moments précieux.',
+      tips: [
+        'Tiens un journal de gratitude (3 choses par jour)',
+        'Célèbre tes progrès, même les plus petits',
+        'Crée des rituels qui te font sourire',
+        'Pratique l\'auto-compassion comme tu le ferais avec ta meilleure amie'
+      ]
+    }
+  ]
+};
+
+// Sections Bonus supplémentaires
+export const bonusSections = [
+  {
+    id: 'petits-succes',
+    title: 'La liste des petits succès',
+    icon: '🏆',
+    color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+    iconColor: 'text-green-600 dark:text-green-400',
+    duration: '2 à 4 minutes',
+    description: 'Célèbre tes victoires quotidiennes',
+    content: {
+      intro: 'Durée : 2 à 4 minutes',
+      steps: [
+        'Note trois petites réussites réalisées cette semaine (même minimes).',
+        'Décris pourquoi ces réussites sont importantes pour toi.',
+        'Relis cette liste chaque matin pour te rappeler que tu es capable.'
+      ],
+      why: 'L\'auto-valorisation aide à renforcer la confiance et à réduire le sentiment d\'échec.',
+      examples: []
+    }
+  },
+  {
+    id: 'question-soir',
+    title: 'La question du soir',
+    icon: '🌙',
+    color: 'from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20',
+    iconColor: 'text-purple-600 dark:text-purple-400',
+    duration: '30 secondes',
+    description: 'Écoute ton intuition profonde',
+    content: {
+      intro: '« Si mon cœur savait déjà, quelle serait sa réponse ? »',
+      subtitle: 'Rituel (30 secondes) :',
+      steps: [
+        'Pense à ton blocage.',
+        'Pose la question.',
+        'Note le premier mot qui vient.'
+      ],
+      why: 'Au réveil, on se sent plus clair, le cœur sait déjà.',
+      examples: [
+        { question: 'Dois-je quitter ce job ?', answer: 'Liberté' },
+        { question: 'Cette amitié me convient ?', answer: 'Épuisée' }
+      ]
+    }
+  },
+  {
+    id: 'limites-paix',
+    title: '8 limites pour préserver ta paix intérieure',
+    icon: '🛡️',
+    color: 'from-pink-50 to-rose-50 dark:from-pink-900/20 dark:to-rose-900/20',
+    iconColor: 'text-pink-600 dark:text-pink-400',
+    duration: 'À pratiquer au quotidien',
+    description: 'Protège ton énergie et ton bien-être',
+    content: {
+      intro: 'Apprends à poser des limites saines pour préserver ta paix intérieure.',
+      steps: [
+        'Ne pas répondre aux messages après une certaine heure',
+        'Couper court aux conversations trop négatives',
+        'Refuser de prêter quelque chose si tu n\'es pas à l\'aise',
+        'Dire non à une invitation sans culpabiliser',
+        'Limiter le contact avec une personne envahissante',
+        'Refuser de parler d\'un sujet sensible',
+        'Demander du temps pour réfléchir avant de répondre',
+        'Dire non à une faveur qui te met dans l\'inconfort'
+      ],
+      why: 'Poser des limites n\'est pas égoïste, c\'est essentiel pour ton bien-être mental et émotionnel.',
+      examples: []
+    }
+  }
+];

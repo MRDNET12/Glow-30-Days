@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useStore, View } from '@/lib/store';
-import { challengeDays, bonusAffirmations } from '@/lib/challenge-data';
-import { Sparkles, BookOpen, TrendingUp, Home, Heart, Target, Layers, Gift, Settings, ChevronRight, Check, Plus, X, Calendar, Moon, Sun, Droplet, Zap, Smile, Activity, Utensils, Lightbulb, Image as ImageIcon, Trash2, Download, Bell, BellOff, Star } from 'lucide-react';
+import { challengeDays, bonusAffirmations, checklistsData, softLifeGuide, bonusSections } from '@/lib/challenge-data';
+import { Sparkles, BookOpen, TrendingUp, Home, Heart, Target, Layers, Gift, Settings, ChevronRight, Check, Plus, X, Calendar, Moon, Sun, Droplet, Zap, Smile, Activity, Utensils, Lightbulb, Image as ImageIcon, Trash2, Download, Bell, BellOff, Star, CheckSquare, ListChecks, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 
 export default function GlowUpChallengeApp() {
   const {
@@ -54,6 +55,12 @@ export default function GlowUpChallengeApp() {
     learned: '',
     freeContent: ''
   });
+
+  // États pour les modals
+  const [selectedChecklist, setSelectedChecklist] = useState<typeof checklistsData[0] | null>(null);
+  const [showSoftLifeGuide, setShowSoftLifeGuide] = useState(false);
+  const [selectedGuideStep, setSelectedGuideStep] = useState<number | null>(null);
+  const [selectedBonusSection, setSelectedBonusSection] = useState<typeof bonusSections[0] | null>(null);
 
   useEffect(() => {
     if (hasStarted) {
@@ -886,7 +893,7 @@ export default function GlowUpChallengeApp() {
 
         {/* Bonus View */}
         {currentView === 'bonus' && (
-          <div className="p-6 space-y-6 max-w-lg mx-auto">
+          <div className="p-6 space-y-6 max-w-lg mx-auto pb-24">
             {/* Header */}
             <div className="flex items-center gap-4">
               <Button
@@ -899,26 +906,30 @@ export default function GlowUpChallengeApp() {
               <h1 className="text-2xl font-bold">Mes Bonus</h1>
             </div>
 
-            {/* Affirmations Audio */}
-            <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Gift className="w-5 h-5 text-rose-400" />
-                  Affirmations Audio
-                </CardTitle>
-                <CardDescription>Écoute les affirmations puissantes</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {bonusAffirmations.slice(0, 5).map((affirmation, i) => (
-                  <div
-                    key={i}
-                    className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'} border-l-4 border-rose-400`}
-                  >
-                    <p className="text-sm italic">"{affirmation}"</p>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+            {/* Sections Bonus Principales */}
+            <div className="space-y-3">
+              {bonusSections.map((section) => (
+                <Card
+                  key={section.id}
+                  onClick={() => setSelectedBonusSection(section)}
+                  className={`border-none shadow-lg cursor-pointer hover:scale-[1.02] transition-transform bg-gradient-to-r ${section.color}`}
+                >
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-4">
+                      <div className={`text-3xl ${section.iconColor} flex-shrink-0`}>
+                        {section.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-base mb-1">{section.title}</h3>
+                        <p className="text-xs text-stone-600 dark:text-stone-400">{section.description}</p>
+                        <p className="text-xs text-stone-500 dark:text-stone-500 mt-1 italic">{section.duration}</p>
+                      </div>
+                      <ChevronRight className={`w-5 h-5 ${section.iconColor} flex-shrink-0`} />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
             {/* Affirmations Écrites */}
             <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
@@ -945,63 +956,56 @@ export default function GlowUpChallengeApp() {
               </CardContent>
             </Card>
 
-            {/* PDF Checklists */}
+            {/* Checklists */}
             <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Download className="w-5 h-5 text-blue-400" />
-                  Checklists PDF
+                  <ListChecks className="w-5 h-5 text-blue-400" />
+                  Checklists
                 </CardTitle>
-                <CardDescription>Des guides pratiques à télécharger</CardDescription>
+                <CardDescription>Des guides pratiques pour t'organiser</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                {[
-                  'Checklist Morning Routine',
-                  'Checklist Evening Routine',
-                  'Checklist Weekly Self-Care',
-                  'Checklist Monthly Goals'
-                ].map((item, i) => (
+                {checklistsData.map((checklist) => (
                   <div
-                    key={i}
-                    className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20"
+                    key={checklist.id}
+                    onClick={() => setSelectedChecklist(checklist)}
+                    className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 cursor-pointer hover:scale-105 transition-transform"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center">
-                        <Download className="w-5 h-5 text-blue-600 dark:text-blue-300" />
+                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-800 flex items-center justify-center text-xl">
+                        {checklist.icon}
                       </div>
                       <div>
-                        <p className="font-semibold text-sm">{item}</p>
-                        <p className="text-xs text-stone-500 dark:text-stone-500">Guide PDF</p>
+                        <p className="font-semibold text-sm">{checklist.title}</p>
+                        <p className="text-xs text-stone-500 dark:text-stone-500">{checklist.items.length} étapes</p>
                       </div>
                     </div>
-                    <Badge variant="outline" className="text-xs">Bientôt</Badge>
+                    <ChevronRight className="w-5 h-5 text-blue-400" />
                   </div>
                 ))}
               </CardContent>
             </Card>
 
             {/* Mini-Guide Soft Life */}
-            <Card className={`border-none shadow-lg ${theme === 'dark' ? 'bg-gradient-to-br from-amber-900/30 to-orange-900/30' : 'bg-gradient-to-br from-amber-50 to-orange-50'}`}>
+            <Card
+              onClick={() => setShowSoftLifeGuide(true)}
+              className={`border-none shadow-lg cursor-pointer hover:scale-105 transition-transform ${theme === 'dark' ? 'bg-gradient-to-br from-amber-900/30 to-orange-900/30' : 'bg-gradient-to-br from-amber-50 to-orange-50'}`}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sun className="w-5 h-5 text-amber-400" />
                   Mini-Guide Soft Life
                 </CardTitle>
-                <CardDescription>Astuces pour une vie douce et épanouie</CardDescription>
+                <CardDescription>5 étapes pour une vie douce et épanouie</CardDescription>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="h-64">
-                  <div className="space-y-3">
-                    {bonusAffirmations.map((tip, i) => (
-                      <div
-                        key={i}
-                        className={`p-3 rounded-lg ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}
-                      >
-                        <p className="text-sm">🌸 {tip}</p>
-                      </div>
-                    ))}
-                  </div>
-                </ScrollArea>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-stone-600 dark:text-stone-400">
+                    Découvre comment créer une vie alignée et sereine
+                  </p>
+                  <ChevronRight className="w-5 h-5 text-amber-400" />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -1182,6 +1186,212 @@ export default function GlowUpChallengeApp() {
           </Button>
         </div>
       </nav>
+
+      {/* Drawer Checklist - Animation coulissante du bas */}
+      <Drawer open={!!selectedChecklist} onOpenChange={(open) => !open && setSelectedChecklist(null)}>
+        <DrawerContent className="max-w-lg mx-auto">
+          <DrawerHeader className="border-b">
+            <div className="flex items-center gap-3">
+              <div className="text-3xl">{selectedChecklist?.icon}</div>
+              <div className="flex-1 text-left">
+                <DrawerTitle className="text-xl">{selectedChecklist?.title}</DrawerTitle>
+                <DrawerDescription>{selectedChecklist?.description}</DrawerDescription>
+              </div>
+              <DrawerClose asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <X className="w-5 h-5" />
+                </Button>
+              </DrawerClose>
+            </div>
+          </DrawerHeader>
+
+          <div className="p-6 overflow-y-auto max-h-[60vh]">
+            <div className="space-y-3">
+              {selectedChecklist?.items.map((item, index) => (
+                <div
+                  key={index}
+                  className={`flex items-start gap-3 p-4 rounded-xl transition-colors ${theme === 'dark' ? 'bg-stone-800 hover:bg-stone-700' : 'bg-stone-50 hover:bg-stone-100'}`}
+                >
+                  <div className="flex-shrink-0 mt-0.5">
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${theme === 'dark' ? 'border-blue-400' : 'border-blue-500'}`}>
+                      <CheckSquare className="w-4 h-4 text-blue-500 dark:text-blue-400 opacity-30" />
+                    </div>
+                  </div>
+                  <p className="text-sm flex-1">{item.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
+
+      {/* Drawer Mini-Guide Soft Life - Animation coulissante du bas */}
+      <Drawer open={showSoftLifeGuide} onOpenChange={(open) => {
+        setShowSoftLifeGuide(open);
+        if (!open) setSelectedGuideStep(null);
+      }}>
+        <DrawerContent className="max-w-lg mx-auto">
+          <DrawerHeader className={`border-b ${theme === 'dark' ? 'bg-gradient-to-br from-amber-900/30 to-orange-900/30 border-stone-800' : 'bg-gradient-to-br from-amber-50 to-orange-50 border-stone-200'}`}>
+            <div className="flex items-center justify-between">
+              <div className="flex-1 text-left">
+                <DrawerTitle className="text-xl flex items-center gap-2">
+                  <Sun className="w-6 h-6 text-amber-400" />
+                  {softLifeGuide.title}
+                </DrawerTitle>
+                <DrawerDescription className="mt-1">{softLifeGuide.subtitle}</DrawerDescription>
+              </div>
+              <DrawerClose asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <X className="w-5 h-5" />
+                </Button>
+              </DrawerClose>
+            </div>
+          </DrawerHeader>
+
+          <div className="p-6 overflow-y-auto max-h-[60vh]">
+            <div className="space-y-4">
+              {softLifeGuide.steps.map((step) => (
+                <Card
+                  key={step.number}
+                  onClick={() => setSelectedGuideStep(selectedGuideStep === step.number ? null : step.number)}
+                  className={`border-none shadow-md cursor-pointer transition-all hover:scale-[1.02] ${theme === 'dark' ? 'bg-stone-800' : 'bg-white'}`}
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="text-3xl">{step.icon}</div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-xs">Étape {step.number}</Badge>
+                        </div>
+                        <CardTitle className="text-lg mt-1">{step.title}</CardTitle>
+                        <CardDescription className="text-xs mt-1">{step.description}</CardDescription>
+                      </div>
+                      <ChevronRight className={`w-5 h-5 text-amber-400 transition-transform ${selectedGuideStep === step.number ? 'rotate-90' : ''}`} />
+                    </div>
+                  </CardHeader>
+
+                  {selectedGuideStep === step.number && (
+                    <CardContent className="pt-0 space-y-4">
+                      <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-900' : 'bg-amber-50'}`}>
+                        <p className="text-sm leading-relaxed">{step.content}</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-amber-400" />
+                          Conseils pratiques
+                        </h4>
+                        <div className="space-y-2">
+                          {step.tips.map((tip, index) => (
+                            <div
+                              key={index}
+                              className={`flex items-start gap-2 p-3 rounded-lg ${theme === 'dark' ? 'bg-stone-900' : 'bg-white'}`}
+                            >
+                              <span className="text-amber-400 text-sm mt-0.5">✨</span>
+                              <p className="text-sm flex-1">{tip}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  )}
+                </Card>
+              ))}
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
+
+      {/* Drawer Sections Bonus - Animation coulissante du bas */}
+      <Drawer open={!!selectedBonusSection} onOpenChange={(open) => !open && setSelectedBonusSection(null)}>
+        <DrawerContent className="max-w-lg mx-auto">
+          <DrawerHeader className={`border-b bg-gradient-to-r ${selectedBonusSection?.color}`}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 flex-1">
+                <div className={`text-3xl ${selectedBonusSection?.iconColor}`}>
+                  {selectedBonusSection?.icon}
+                </div>
+                <div className="flex-1 text-left">
+                  <DrawerTitle className="text-xl">{selectedBonusSection?.title}</DrawerTitle>
+                  <DrawerDescription>{selectedBonusSection?.duration}</DrawerDescription>
+                </div>
+              </div>
+              <DrawerClose asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <X className="w-5 h-5" />
+                </Button>
+              </DrawerClose>
+            </div>
+          </DrawerHeader>
+
+          <div className="p-6 overflow-y-auto max-h-[65vh]">
+            {selectedBonusSection && (
+              <div className="space-y-6">
+                {/* Intro */}
+                {selectedBonusSection.content.intro && (
+                  <div className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'}`}>
+                    <p className="text-base font-semibold text-center">
+                      {selectedBonusSection.content.intro}
+                    </p>
+                  </div>
+                )}
+
+                {/* Subtitle (pour la question du soir) */}
+                {selectedBonusSection.content.subtitle && (
+                  <p className="text-sm font-medium text-stone-600 dark:text-stone-400">
+                    {selectedBonusSection.content.subtitle}
+                  </p>
+                )}
+
+                {/* Steps */}
+                <div className="space-y-3">
+                  {selectedBonusSection.content.steps.map((step, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-start gap-3 p-4 rounded-xl ${theme === 'dark' ? 'bg-stone-800' : 'bg-stone-50'}`}
+                    >
+                      <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${theme === 'dark' ? 'bg-stone-700 text-stone-300' : 'bg-white text-stone-600'}`}>
+                        {selectedBonusSection.id === 'limites-paix' ? '•' : index + 1}
+                      </div>
+                      <p className="text-sm flex-1 leading-relaxed">{step}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Examples (pour la question du soir) */}
+                {selectedBonusSection.content.examples && selectedBonusSection.content.examples.length > 0 && (
+                  <div className="space-y-3">
+                    <h4 className="font-semibold text-sm flex items-center gap-2">
+                      <Lightbulb className="w-4 h-4 text-amber-400" />
+                      Exemples
+                    </h4>
+                    {selectedBonusSection.content.examples.map((example, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 rounded-xl ${theme === 'dark' ? 'bg-purple-900/20' : 'bg-purple-50'}`}
+                      >
+                        <p className="text-sm font-medium mb-1">« {example.question} »</p>
+                        <p className="text-sm text-purple-600 dark:text-purple-400">→ {example.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Why it works */}
+                {selectedBonusSection.content.why && (
+                  <div className={`p-4 rounded-xl border-l-4 ${selectedBonusSection.id === 'petits-succes' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : selectedBonusSection.id === 'question-soir' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-pink-500 bg-pink-50 dark:bg-pink-900/20'}`}>
+                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                      <Star className="w-4 h-4" />
+                      {selectedBonusSection.id === 'question-soir' ? 'Résultat' : 'Pourquoi ça marche ?'}
+                    </h4>
+                    <p className="text-sm leading-relaxed">{selectedBonusSection.content.why}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </DrawerContent>
+      </Drawer>
 
       <style jsx global>{`
         .safe-area-pb {
