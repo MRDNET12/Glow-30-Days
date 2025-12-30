@@ -1,3 +1,13 @@
+import { 
+  challengeDaysTranslations, 
+  bonusAffirmationsTranslations, 
+  checklistsDataTranslations, 
+  softLifeGuideTranslations, 
+  bonusSectionsTranslations, 
+  fiftyThingsAloneTranslations 
+} from './challenge-data-translations';
+import { Language } from './translations';
+
 export interface ChallengeDay {
   day: number;
   week: number;
@@ -13,6 +23,41 @@ export interface ChallengeDay {
   };
 }
 
+export const getChallengeDays = (language: Language): ChallengeDay[] => {
+  const translations = language === 'es' ? challengeDaysTranslations.es : challengeDaysTranslations.en;
+  return translations.map((t, index) => ({
+    day: index + 1,
+    week: Math.floor(index / 7) + 1,
+    weekTitle: t.weekTitle,
+    weekObjective: t.weekObjective,
+    title: t.title,
+    content: t.content,
+    affirmation: t.affirmation,
+    actions: t.actions
+  }));
+};
+
+export const getBonusAffirmations = (language: Language): string[] => {
+  return language === 'es' ? bonusAffirmationsTranslations.es : bonusAffirmationsTranslations.en;
+};
+
+export const getChecklistsData = (language: Language) => {
+  return language === 'es' ? checklistsDataTranslations.es : checklistsDataTranslations.en;
+};
+
+export const getSoftLifeGuide = (language: Language) => {
+  return language === 'es' ? softLifeGuideTranslations.es : softLifeGuideTranslations.en;
+};
+
+export const getBonusSections = (language: Language) => {
+  return language === 'es' ? bonusSectionsTranslations.es : bonusSectionsTranslations.en;
+};
+
+export const getFiftyThingsAlone = (language: Language) => {
+  return language === 'es' ? fiftyThingsAloneTranslations.es : fiftyThingsAloneTranslations.en;
+};
+
+// French content (original)
 export const challengeDays: ChallengeDay[] = [
   // Semaine 1
   {
@@ -303,7 +348,7 @@ export const challengeDays: ChallengeDay[] = [
     weekTitle: "Mindset & Confiance",
     weekObjective: "Développer une mentalité forte, douce et magnétique.",
     title: "Bilan Semaine 3",
-    content: "Comment ton mindset évolue ? Quelle pensée t'a portée cette semaine ?",
+    content: "Comment ton mindset évolue-t-il ? Quelle pensée t'a portée cette semaine ?",
     affirmation: "Je deviens mentalement plus forte chaque jour.",
     actions: {
       beauty: "Fais un soin qui te fait plaisir.",
@@ -568,7 +613,7 @@ export const softLifeGuide = {
     },
     {
       number: 2,
-      title: 'Crée un Espace Sacré',
+      title: 'Crée un Espace Sacrée',
       icon: '🕯️',
       description: 'Ton environnement influence ton énergie',
       content: 'Transforme ton espace en sanctuaire. Désencombre, ajoute des bougies parfumées, des plantes, des textures douces. Choisis des couleurs apaisantes (beige, blanc cassé, rose poudré). Ton espace doit te faire sentir en paix dès que tu y entres.',
@@ -602,7 +647,7 @@ export const softLifeGuide = {
         'Unfollow tout ce qui ne t\'inspire pas ou te fait sentir mal',
         'Crée des playlists qui élèvent ton mood',
         'Pratique le "non" sans culpabilité',
-        'Entoure-toi de personnes qui célèbrent ta croissance'
+        'Entoure-toi de personnes qui célébrent ta croissance'
       ]
     },
     {
