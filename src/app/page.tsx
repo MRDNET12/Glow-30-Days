@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useStore, View } from '@/lib/store';
-import { challengeDays, bonusAffirmations, checklistsData, softLifeGuide, bonusSections, fiftyThingsAlone } from '@/lib/challenge-data';
+import { getChallengeDays, getBonusAffirmations, getChecklistsData, getSoftLifeGuide, getBonusSections, getFiftyThingsAlone } from '@/lib/challenge-data';
 import {
   challengeDaysTranslations,
   bonusAffirmationsTranslations,
