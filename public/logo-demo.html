@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Up Challenge - Logo Premium</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #f43f5e, #ec4899, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #78350f;
+            font-size: 1.2rem;
+            margin-bottom: 60px;
+            opacity: 0.8;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .card h2 {
+            color: #78350f;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .card p {
+            color: #92400e;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        
+        .logo-large {
+            width: 200px;
+            height: 200px;
+        }
+        
+        .logo-medium {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .logo-small {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .logo-tiny {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .bg-dark {
+            background: #1c1917;
+        }
+        
+        .bg-light {
+            background: #fafaf9;
+        }
+        
+        .colors {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .color-swatch {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 8px;
+        }
+        
+        .color-label {
+            font-size: 0.7rem;
+            color: white;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .features {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .features h2 {
+            color: #78350f;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-align: center;
+        }
+        
+        .features ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .features li {
+            padding: 20px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+            border-radius: 12px;
+            color: #78350f;
+            font-weight: 500;
+        }
+        
+        .features li::before {
+            content: "✨ ";
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 Glow Up Challenge</h1>
+        <p class="subtitle">Logo Premium - Design & Variations</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>Logo Principal</h2>
+                <p>Version complète avec animations</p>
+                <div class="logo-container">
+                    <img src="/logo.svg" alt="Glow Logo" class="logo-large">
+                </div>
+            </div>
+            
+            <div class="card bg-dark">
+                <h2 style="color: #fef3c7;">Sur Fond Sombre</h2>
+                <p style="color: #fed7aa;">Parfait pour le mode dark</p>
+                <div class="logo-container">
+                    <img src="/logo.svg" alt="Glow Logo" class="logo-large">
+                </div>
+            </div>
+            
+            <div class="card bg-light">
+                <h2>Sur Fond Clair</h2>
+                <p>Idéal pour le mode light</p>
+                <div class="logo-container">
+                    <img src="/logo.svg" alt="Glow Logo" class="logo-large">
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2>🎨 Palette de Couleurs</h2>
+            <div class="colors">
+                <div class="color-swatch" style="background: #f43f5e;">
+                    <span class="color-label">#f43f5e<br>Rose</span>
+                </div>
+                <div class="color-swatch" style="background: #ec4899;">
+                    <span class="color-label">#ec4899<br>Pink</span>
+                </div>
+                <div class="color-swatch" style="background: #fb923c;">
+                    <span class="color-label">#fb923c<br>Orange</span>
+                </div>
+                <div class="color-swatch" style="background: #fbbf24;">
+                    <span class="color-label">#fbbf24<br>Amber</span>
+                </div>
+            </div>
+        </div>
+        
+        <br><br>
+        
+        <div class="features">
+            <h2>✨ Caractéristiques</h2>
+            <ul>
+                <li>Design fleur à 8 pétales symbolisant la croissance</li>
+                <li>Dégradés harmonieux rose-orange</li>
+                <li>3 animations CSS fluides (sparkle, pulse, rotate)</li>
+                <li>Optimisé pour toutes les tailles (32px à 200px)</li>
+                <li>Compatible mode clair et sombre</li>
+                <li>Format SVG vectoriel haute qualité</li>
+                <li>Effet de lueur (glow) avec filtres SVG</li>
+                <li>Responsive et adaptatif</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
